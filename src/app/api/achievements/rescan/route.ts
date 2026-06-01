@@ -7,6 +7,7 @@ export async function POST() {
     // Uses importlib to load the plugin module since the directory name
     // (hermes-achievements) contains a hyphen and is not a valid Python identifier.
     const home = process.env.HOME || '/home/wolfj';
+    const hermesHome = process.env.HERMES_HOME || `${home}/.hermes/profiles/weyrleader`;
     const pluginDir = `${home}/.hermes/hermes-agent/plugins/hermes-achievements/dashboard`;
     // Use Hermes's own venv so hermes_state and other deps are available
     const python = `${home}/.hermes/hermes-agent/venv/bin/python`;
@@ -26,6 +27,7 @@ print(json.dumps(data))
         env: {
           ...process.env,
           HOME: home,
+          HERMES_HOME: hermesHome,
         },
       }
     );
@@ -43,7 +45,7 @@ print(json.dumps(data))
     console.error('Achievements rescan error:', err);
     return NextResponse.json(
       { ok: false, error: String(err) },
-      { status: 500 }
+      { status: 500}
     );
   }
 }

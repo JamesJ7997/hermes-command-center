@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { readFileSync, existsSync } from 'fs';
 
-const SNAPSHOT_PATH = `${process.env.HOME}/.hermes/plugins/hermes-achievements/scan_snapshot.json`;
+const SNAPSHOT_PATH = `${process.env.HERMES_HOME || process.env.HOME + '/.hermes/profiles/weyrleader'}/plugins/hermes-achievements/scan_snapshot.json`;
 
 export async function GET() {
   try {
