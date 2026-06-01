@@ -5,7 +5,7 @@ import { writeFileSync, unlinkSync } from 'fs';
 export async function POST() {
   try {
     const home = process.env.HOME || '/home/wolfj';
-    const hermesHome = process.env.HERMES_HOME || `${home}/.hermes/profiles/weyrleader`;
+    const hermesHome = "/home/wolfj/.hermes/profiles/weyrleader";
     const pluginDir = `${home}/.hermes/hermes-agent/plugins/hermes-achievements/dashboard`;
     const python = `${home}/.hermes/hermes-agent/venv/bin/python`;
 
