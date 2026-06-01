@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  hermes-ui:
+  hermes-command-center:
     build: .
-    container_name: hermes-ui
+    container_name: hermes-command-center
     ports:
       - "3000:3000"
     environment:
