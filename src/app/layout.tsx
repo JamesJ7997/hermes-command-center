@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hermes UI",
+  title: "Hermes Command Center",
   description: "Hermes Agent Command Center",
 };
 

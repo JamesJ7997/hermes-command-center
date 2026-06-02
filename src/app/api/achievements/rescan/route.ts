@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { execSync } from 'child_process';
 import { writeFileSync, unlinkSync } from 'fs';
 
+const SNAPSHOT_PATH = "/home/wolfj/.hermes/profiles/weyrleader/plugins/hermes-achievements/scan_snapshot.json";
+
 export async function POST() {
   try {
     const home = process.env.HOME || '/home/wolfj';
@@ -48,6 +50,21 @@ export async function POST() {
       });
 
       const data = JSON.parse(result.toString());
+
+      // Persist to the same snapshot file the GET route reads
+      writeFileSync(
+        SNAPSHOT_PATH,
+        JSON.stringify(
+          {
+            achievements: data.achievements || [],
+            total_count: data.total_count || 0,
+            unlocked_count: data.unlocked_count || 0,
+            scan_meta: data.scan_meta || {},
+          },
+          null,
+          2,
+        ),
+      );
 
       return NextResponse.json({
         ok: true,

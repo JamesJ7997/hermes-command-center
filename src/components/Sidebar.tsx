@@ -14,7 +14,7 @@ interface NavItemDef {
 const COMMAND_CENTER: NavItemDef[] = [
   { icon: "📊", label: "Dashboard", href: "/" },
   { icon: "🏆", label: "Achievements", href: "/achievements" },
-  { icon: "🐝", label: "Swarm / Kanban", href: "/swarm" },
+  { icon: "🐝", label: "Wing Command", href: "/swarm" },
   { icon: "👤", label: "Profiles", href: "/profiles" },
 ];
 
@@ -80,7 +80,7 @@ export default function Sidebar() {
       <div className="p-6 border-b border-zinc-800">
         <Link href="/" className="no-underline">
           <h1 className="text-xl font-bold tracking-tight text-zinc-100">
-            HERMES <span className="text-zinc-500 font-normal">UI</span>
+            HERMES <span className="text-zinc-500 font-normal">Command Center</span>
           </h1>
         </Link>
       </div>

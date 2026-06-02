@@ -32,35 +32,42 @@ function buildSwarmCommand(req: LaunchRequest): string[] {
   const goal = req.description || req.name;
   const cmd = ["hermes", "kanban", "swarm", "--json"];
 
-  // Assign workers based on mission type
+  // T1: Child task titles include parent mission name.
+  // Each child gets "Wing Mission: <name> — <Role>" as its title.
+  const missionName = req.name;
+  const childTitle = (role: string) => `Wing Mission: ${missionName} — ${role}`;
+
+  // Root goal prefixed with "Warm:" for the parent card display
+  const prefixedGoal = `Swarm: ${missionName}: ${goal}`;
+
   switch (req.type) {
     case "build":
-      cmd.push("--worker", `${dragons.implement}:implement`);
-      cmd.push("--verifier", `${dragons.review}:review`);
-      cmd.push("--synthesizer", `${dragons.document}:document`);
+      cmd.push("--worker", `${dragons.implement}:${childTitle("Implement")}`);
+      cmd.push("--verifier", `${dragons.review}:${childTitle("Verify")}`);
+      cmd.push("--synthesizer", `${dragons.document}:${childTitle("Synthesize")}`);
       break;
     case "explore":
-      cmd.push("--worker", `${dragons.research}:research`);
-      cmd.push("--verifier", `${dragons.evaluate}:evaluate`);
-      cmd.push("--synthesizer", `${dragons.document}:document`);
+      cmd.push("--worker", `${dragons.research}:${childTitle("Research")}`);
+      cmd.push("--verifier", `${dragons.evaluate}:${childTitle("Evaluate")}`);
+      cmd.push("--synthesizer", `${dragons.document}:${childTitle("Synthesize")}`);
       break;
     case "review":
-      cmd.push("--verifier", `${dragons.review}:review`);
-      cmd.push("--synthesizer", `${dragons.document}:document`);
+      cmd.push("--verifier", `${dragons.review}:${childTitle("Verify")}`);
+      cmd.push("--synthesizer", `${dragons.document}:${childTitle("Synthesize")}`);
       break;
     case "full":
-      cmd.push("--worker", `${dragons.implement}:implement`);
-      cmd.push("--worker", `${dragons.research}:explore`);
-      cmd.push("--verifier", `${dragons.review}:review`);
-      cmd.push("--synthesizer", `${dragons.synthesize}:synthesize`);
+      cmd.push("--worker", `${dragons.implement}:${childTitle("Implement")}`);
+      cmd.push("--worker", `${dragons.research}:${childTitle("Explore")}`);
+      cmd.push("--verifier", `${dragons.review}:${childTitle("Verify")}`);
+      cmd.push("--synthesizer", `${dragons.synthesize}:${childTitle("Synthesize")}`);
       break;
     default:
-      cmd.push("--worker", `${dragons.implement}:implement`);
-      cmd.push("--verifier", `${dragons.review}:review`);
-      cmd.push("--synthesizer", `${dragons.document}:document`);
+      cmd.push("--worker", `${dragons.implement}:${childTitle("Implement")}`);
+      cmd.push("--verifier", `${dragons.review}:${childTitle("Verify")}`);
+      cmd.push("--synthesizer", `${dragons.document}:${childTitle("Synthesize")}`);
   }
 
-  cmd.push(goal);
+  cmd.push(prefixedGoal);
   return cmd;
 }
 
@@ -101,7 +108,7 @@ export async function POST(request: Request) {
         verifier: result.verifier_id,
         synthesizer: result.synthesizer_id,
       },
-      totalTasks: 1 + result.worker_ids.length + 2, // root + workers + verifier + synthesizer
+      totalTasks: 1 + result.worker_ids.length + 2,
     });
   } catch (error: any) {
     console.error("Failed to launch swarm:", error.message);
